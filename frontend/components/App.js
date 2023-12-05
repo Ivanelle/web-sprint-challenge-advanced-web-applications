@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
-import Articles from './Articles'
-import LoginForm from './LoginForm'
-import Message from './Message'
-import ArticleForm from './ArticleForm'
-import Spinner from './Spinner'
+import React, { useState, useEffect } from 'react'
+import { NavLink, Routes, Route, useNavigate } from 'react-router-dom';
+import Articles from './Articles';
+import LoginForm from './LoginForm';
+import Message from './Message';
+import ArticleForm from './ArticleForm';
+import Spinner from './Spinner';
+import axiosWithAuth from '../axios';
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -18,10 +19,16 @@ export default function App() {
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToLogin = () => { navigate('/') }
+  const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
+    
+      if (axiosWithAuth) {
+        localStorage.removeItem('token');
+        setMessage('Goodbye!');
+        redirectToLogin()
+      }
     // ✨ implement
     // If a token is in local storage it should be removed,
     // and a message saying "Goodbye!" should be set in its proper state.
@@ -30,6 +37,11 @@ export default function App() {
   }
 
   const login = ({ username, password }) => {
+
+    setMessage(`Welcome back, ${username}!`)
+    setSpinnerOn(true)
+
+    axiosWithAuth
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch a request to the proper endpoint.
