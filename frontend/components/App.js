@@ -28,6 +28,10 @@ export default function App() {
         localStorage.removeItem('token');
         setMessage('Goodbye!');
         redirectToLogin()
+
+        console.log('logged out')
+      } else {
+        redirectToLogin()
       }
     // ✨ implement
     // If a token is in local storage it should be removed,
@@ -37,11 +41,29 @@ export default function App() {
   }
 
   const login = ({ username, password }) => {
-
-    setMessage(`Welcome back, ${username}!`)
+    setMessage('')
     setSpinnerOn(true)
 
-    axiosWithAuth
+    axiosWithAuth().post(loginUrl, {
+        username: username,
+        password: password,
+    })
+    .then(response => {
+      console.log(response.data)
+
+      localStorage.setItem('token', response.data.token)
+      setMessage(response.data.message)
+      redirectToArticles()
+      setSpinnerOn(false)
+
+    })
+    .catch(err => {
+      console.log('Login API Error', err)
+    })
+    
+
+
+
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch a request to the proper endpoint.
@@ -90,7 +112,7 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm login={login} />} />
           <Route path="articles" element={
             <>
               <ArticleForm />

@@ -9,7 +9,7 @@ const axiosWithAuth = () => {
             authorization: token
         }
     })
-        return instance;
+        return instance
 }
 
-export default axiosWithAuth;
+export default axiosWithAuth
