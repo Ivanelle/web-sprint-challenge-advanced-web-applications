@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PT from 'prop-types';
-import axios from 'axios';
-import axiosWithAuth from '../axios';
+
 
 export default function Articles(props) {
+  const navigate = useNavigate()
   const token = localStorage.getItem('token');
-  const { getArticles } = props
+  const { getArticles, postArticle } = props
   // ✨ where are my props? Destructure them here
-  if (!token) {
-    Navigate('/')
-  }
   // ✨ implement conditional logic: if no token exists
   // we should render a Navigate to login screen (React Router v.6)
 
   useEffect(() => {
-   getArticles()
+    if(!token) {
+      navigate('/')
+    } else {
+      getArticles()
+    }
     // ✨ grab the articles here, on first render only
   },[])
 

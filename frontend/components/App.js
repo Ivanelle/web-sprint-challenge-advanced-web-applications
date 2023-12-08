@@ -105,6 +105,28 @@ export default function App() {
   }
 
   const postArticle = article => {
+    const token = localStorage.getItem('token')
+    const { title, text, topic } = article
+
+    setMessage('');
+    setSpinnerOn(true);
+
+    axiosWithAuth().post(articlesUrl, {
+      title: title.trim(),
+      text: text.trim(),
+      topic: topic
+    },
+    {
+      headers: {
+        authorization: token
+      }
+    })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -137,7 +159,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles getArticles={getArticles}/>
+              <Articles getArticles={getArticles} postArticle={postArticle} />
             </>
           } />
         </Routes>
