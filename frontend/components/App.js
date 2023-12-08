@@ -23,8 +23,8 @@ export default function App() {
   const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
-    
-      if (axiosWithAuth) {
+    const token = localStorage.getItem('token')
+      if (token) {
         localStorage.removeItem('token');
         setMessage('Goodbye!');
         redirectToLogin()
@@ -41,24 +41,24 @@ export default function App() {
   }
 
   const login = ({ username, password }) => {
-    setMessage('')
-    setSpinnerOn(true)
+    setMessage('');
+    setSpinnerOn(true);
 
     axiosWithAuth().post(loginUrl, {
         username: username,
         password: password,
     })
-    .then(response => {
-      console.log(response.data)
 
+    .then(response => {
       localStorage.setItem('token', response.data.token)
       setMessage(response.data.message)
       redirectToArticles()
       setSpinnerOn(false)
 
     })
+
     .catch(err => {
-      console.log('Login API Error', err)
+      setMessage(err.message)
     })
     
 
@@ -73,6 +73,27 @@ export default function App() {
   }
 
   const getArticles = () => {
+    const token = localStorage.getItem('token');
+
+    setMessage('');
+    setSpinnerOn(true);
+
+    axiosWithAuth().get(articlesUrl, {
+      headers: {
+        authorization: token
+      }
+    })
+      .then(res => {
+        console.log(res)
+        setArticles(res.data.articles)
+        setMessage(res.data.message)
+        setSpinnerOn(false)
+      })
+      .catch(err => {
+        console.log(err)
+        redirectToLogin()
+      })
+
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -116,7 +137,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles />
+              <Articles getArticles={getArticles}/>
             </>
           } />
         </Routes>
