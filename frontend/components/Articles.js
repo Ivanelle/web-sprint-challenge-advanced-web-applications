@@ -10,7 +10,8 @@ export default function Articles(props) {
     getArticles, 
     articles, 
     deleteArticle, 
-    setCurrentArticleId 
+    setCurrentArticleId,
+    currentArticleId
   } = props
   // ✨ where are my props? Destructure them here
   // ✨ implement conditional logic: if no token exists
@@ -42,8 +43,8 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={art.article_id ? false : true} onClick={() => setCurrentArticleId(art.article_id)}>Edit</button>
-                  <button disabled={false} onClick={() => deleteArticle(art.article_id)}>Delete</button>
+                  <button disabled={currentArticleId ? false : true} onClick={() => setCurrentArticleId(art.article_id)}>Edit</button>
+                  <button disabled={currentArticleId ? false : true} onClick={() => deleteArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )

@@ -6,10 +6,9 @@ const initialFormValues = { title: '', text: '', topic: '' }
 export default function ArticleForm(props) {
   const { 
     postArticle, 
-    currentArticle,
     updateArticle, 
+    currentArticle,
     setCurrentArticleId,
-    articles
   } = props
   const [values, setValues] = useState(initialFormValues)
   // ✨ where are my props? Destructure them here
@@ -44,9 +43,9 @@ export default function ArticleForm(props) {
       if(currentArticle) {
         updateArticle({
           article_id: currentArticle.currentArticle_id,
-          article: { title, text, topic }
-          
+          article: { title: title, text: text, topic: topic }
         })
+        setValues(values)
       } else {
 
         postArticle({ 

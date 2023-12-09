@@ -112,18 +112,20 @@ export default function App() {
 
     axiosWithAuth().post(articlesUrl, article, {
       headers: {
-        authorization: token
+        authorization: token,
       }
     })
       .then(res => {
-        setArticles(res.data.article)
+        console.log(res)
+        setArticles(prevArticles => 
+          [...prevArticles, res.data.article])
         setMessage(res.data.message)
-        setSpinnerOn(false)
       })
       .catch(err => {
         console.log(err.message)
         redirectToLogin()
       })
+      .finally(setSpinnerOn(false))
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -169,7 +171,6 @@ export default function App() {
       },
     })
     .then(res => {
-      console.log(res)
       setMessage(res.data.message)
 
     })
@@ -210,6 +211,7 @@ export default function App() {
                 getArticles={getArticles} 
                 updateArticle={updateArticle} 
                 deleteArticle={deleteArticle}
+                currentArticleId={currentArticleId}
                 setCurrentArticleId={setCurrentArticleId}
               />
             </>
