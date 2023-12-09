@@ -158,7 +158,28 @@ export default function App() {
   }
 
   const deleteArticle = article_id => {
-    axiosWithAuth().delete(`http://localhost:9000/api/articles/${article_id}`)
+    const token = localStorage.getItem('token');
+
+    setMessage('');
+    setSpinnerOn(true);
+
+    axiosWithAuth().delete(`${articlesUrl}/${article_id}`, {
+      headers: {
+        authorization: token
+      },
+    })
+    .then(res => {
+      console.log(res)
+      setMessage(res.data.message)
+
+    })
+    .catch((err) => {
+      console.log(err.message)
+    })
+    .finally(
+      setSpinnerOn(false)
+      
+    )
     // ✨ implement
   }
 
