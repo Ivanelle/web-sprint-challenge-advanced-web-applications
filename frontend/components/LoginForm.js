@@ -17,7 +17,7 @@ export default function LoginForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault();
-    login(values)
+    login(values);
     // ✨ implement
   }
 
