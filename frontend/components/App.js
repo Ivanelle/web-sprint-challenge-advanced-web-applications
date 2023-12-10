@@ -148,8 +148,8 @@ export default function App() {
     })
     .then(res => {
       setArticles(prevArticles => 
-        prevArticles.map(prevArticle => 
-          prevArticle.article_id === res.data.article_id ? res.data.article : prevArticle
+        prevArticles.map(article => 
+          article.article_id === res.data.article.article_id ? res.data.article : article
         )
       );
       setMessage(res.data.message);
