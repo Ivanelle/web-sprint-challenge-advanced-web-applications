@@ -14,6 +14,7 @@ export default function App() {
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
   const [articles, setArticles] = useState([])
+  const [currentArticle, setCurrentArticle] = useState(null)
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
@@ -77,7 +78,7 @@ export default function App() {
     setMessage('');
     setSpinnerOn(true);
 
-    axiosWithAuth().get(articlesUrl, {
+    axiosWithAuth().get(articlesUrl, articles, {
       headers: {
         authorization: token
       },
@@ -88,6 +89,7 @@ export default function App() {
       })
       .catch(err => {
         console.log(err)
+        setMessage(err.message)
         redirectToLogin()
       })
       .finally(() => {
@@ -123,6 +125,7 @@ export default function App() {
       })
       .catch(err => {
         console.log(err.message)
+        setMessage(err.message)
         redirectToLogin()
       })
       .finally(setSpinnerOn(false))
@@ -145,16 +148,19 @@ export default function App() {
     })
     .then(res => {
       setArticles(prevArticles => 
-        prevArticles.map(article => 
-          article.id === res.data.article.id ? res.data.article : article
+        prevArticles.map(prevArticle => 
+          prevArticle.article_id === res.data.article_id ? res.data.article : prevArticle
         )
       );
       setMessage(res.data.message);
-      setSpinnerOn(false)
     })
     .catch(err => {
+      setMessage(err.message)
       console.log(err.message)
     })
+    .finally(
+      setSpinnerOn(false)
+    )
     // ✨ implement
     // You got this!
   }
@@ -201,18 +207,20 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm 
+
                 postArticle={postArticle} 
                 updateArticle={updateArticle}
                 deleteArticle={deleteArticle}
                 setCurrentArticleId={setCurrentArticleId}
+                currentArticle={currentArticle}
               />
               <Articles 
                 articles={articles}
                 getArticles={getArticles} 
-                updateArticle={updateArticle} 
                 deleteArticle={deleteArticle}
                 currentArticleId={currentArticleId}
                 setCurrentArticleId={setCurrentArticleId}
+                setCurrentArticle={setCurrentArticle}
               />
             </>
           } />

@@ -14,17 +14,18 @@ export default function ArticleForm(props) {
   // ✨ where are my props? Destructure them here
 
   useEffect(() => {
-
+    
     if (currentArticle) {
       setValues({
         title: currentArticle.title,
         text: currentArticle.text,
         topic: currentArticle.topic
-      })
-      console.log(currentArticle)
+
+      });
     } else {
-      setValues(initialFormValues)
+      setValues(initialFormValues);
     }
+
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
@@ -37,22 +38,20 @@ export default function ArticleForm(props) {
   }
 
   const onSubmit = evt => {
-    const { title, text, topic } = values
       evt.preventDefault()
 
-      if(currentArticle) {
+      const { title, text, topic } = values;
+    
+      if (currentArticle) {
         updateArticle({
-          article_id: currentArticle.currentArticle_id,
-          article: { title: title, text: text, topic: topic }
+          article_id: currentArticle.article_id,
+          article: { title, text, topic }
         })
-        setValues(values)
-      } else {
+        setCurrentArticleId(null);
+        setValues(initialFormValues);
 
-        postArticle({ 
-          title,
-          text,
-          topic
-      })
+      } else {
+        postArticle({ title, text, topic })
         setValues(initialFormValues)
       }
 
@@ -102,7 +101,9 @@ export default function ArticleForm(props) {
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={() => setCurrentArticleId()}>Cancel edit</button>
+          <button onClick={() => setCurrentArticleId(null)}>
+            Cancel edit
+          </button>
       </div>
     </form>
   )

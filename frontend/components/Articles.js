@@ -11,7 +11,8 @@ export default function Articles(props) {
     articles, 
     deleteArticle, 
     setCurrentArticleId,
-    currentArticleId
+    currentArticleId,
+    setCurrentArticle,
   } = props
   // ✨ where are my props? Destructure them here
   // ✨ implement conditional logic: if no token exists
@@ -25,6 +26,11 @@ export default function Articles(props) {
     }
     // ✨ grab the articles here, on first render only
   },[])
+
+  const handleEdit = article => {
+    setCurrentArticle(article);
+    setCurrentArticleId(article.article_id)
+  };
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
@@ -43,8 +49,8 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={currentArticleId ? false : true} onClick={() => setCurrentArticleId(art.article_id)}>Edit</button>
-                  <button disabled={currentArticleId ? false : true} onClick={() => deleteArticle(art.article_id)}>Delete</button>
+                  <button disabled={currentArticleId} onClick={() => handleEdit(art)}>Edit</button>
+                  <button disabled={currentArticleId} onClick={() => deleteArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )
