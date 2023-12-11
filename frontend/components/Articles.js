@@ -32,6 +32,10 @@ export default function Articles(props) {
     setCurrentArticleId(article.article_id)
   };
 
+  const handeleDelete = (article_id) => {
+    deleteArticle(article_id)
+  }
+
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
     // and use the articles prop to generate articles
@@ -50,7 +54,7 @@ export default function Articles(props) {
                 </div>
                 <div>
                   <button disabled={currentArticleId} onClick={() => handleEdit(art)}>Edit</button>
-                  <button disabled={currentArticleId} onClick={() => deleteArticle(art.article_id)}>Delete</button>
+                  <button disabled={currentArticleId} onClick={() => handeleDelete(art.article_id)}>Delete</button>
                 </div>
               </div>
             )

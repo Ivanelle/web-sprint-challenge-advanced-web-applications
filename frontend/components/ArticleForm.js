@@ -37,13 +37,13 @@ export default function ArticleForm(props) {
     setValues({ ...values, [id]: value })
   }
 
-  const onSubmit = evt => {
+  const onSubmit = async evt => {
       evt.preventDefault()
 
       const { title, text, topic } = values;
     
       if (currentArticle) {
-        updateArticle({
+        await updateArticle({
           article_id: currentArticle.article_id,
           article: { title, text, topic }
         })

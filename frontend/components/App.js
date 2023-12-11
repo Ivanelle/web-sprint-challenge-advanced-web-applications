@@ -147,11 +147,10 @@ export default function App() {
       }
     })
     .then(res => {
-      setArticles(prevArticles => 
-        prevArticles.map(article => 
-          article.article_id === res.data.article.article_id ? res.data.article : article
-        )
-      );
+      setArticles(prevArticles => (
+        prevArticles.map(article => article.article_id === article_id ? res.data.article : article)
+      ));
+
       setMessage(res.data.message);
     })
     .catch(err => {
@@ -177,10 +176,17 @@ export default function App() {
       },
     })
     .then(res => {
+      setArticles(prevArticles => (
+        prevArticles.filter(article => 
+          article_id !== article.article_id 
+        )
+      ))
+      console.log(res)
       setMessage(res.data.message)
 
     })
     .catch((err) => {
+      setMessage(err.message)
       console.log(err.message)
     })
     .finally(
@@ -210,7 +216,6 @@ export default function App() {
 
                 postArticle={postArticle} 
                 updateArticle={updateArticle}
-                deleteArticle={deleteArticle}
                 setCurrentArticleId={setCurrentArticleId}
                 currentArticle={currentArticle}
               />
